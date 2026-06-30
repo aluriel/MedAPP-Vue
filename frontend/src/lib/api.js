@@ -1,6 +1,8 @@
 import { supabase } from './supabase';
 
-const BASE = 'http://localhost:3001';
+// In production, Vercel's vercel.json rewrites /api → backend service.
+// In dev, vite.config.js proxies /api → http://localhost:3001.
+const BASE = '/api';
 
 async function getToken() {
   const { data: { session } } = await supabase.auth.getSession();

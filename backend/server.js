@@ -3,13 +3,26 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors());
 app.use(express.json());
 
-app.use('/sheets',      require('./routes/sheets'));
-app.use('/tasks',       require('./routes/tasks'));
-app.use('/completions', require('./routes/completions'));
+const sheets      = require('./routes/sheets');
+const tasks       = require('./routes/tasks');
+const completions = require('./routes/completions');
 
-app.listen(PORT, () => console.log(`Backend on http://localhost:${PORT}`));
+// Mount under both bare paths (local) and /api (Vercel rewrite forwards /api/*).
+for (const base of ['', '/api']) {
+  app.use(`${base}/sheets`,      sheets);
+  app.use(`${base}/tasks`,       tasks);
+  app.use(`${base}/completions`, completions);
+}
+
+module.exports = app;
+
+// Only start a long-lived server when run directly (local dev).
+// On Vercel the app is imported and invoked per-request.
+if (require.main === module) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => console.log(`Backend on http://localhost:${PORT}`));
+}
