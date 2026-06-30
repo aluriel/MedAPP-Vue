@@ -1,0 +1,13 @@
+{
+  "name": "medapp-vue",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "MedAPP Vue 3 frontend + Express backend (Vercel serverless function under /api)",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
